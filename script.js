@@ -66,5 +66,8 @@ const suggestionText = document.getElementById("suggestion");
 button.addEventListener("click", () => {
   const randomIndex = Math.floor(Math.random() * suggestions.length);
   suggestionText.textContent = suggestions[randomIndex];
+
+  button.textContent = "Again";
+
 });
 
