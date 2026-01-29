@@ -9,11 +9,30 @@
 <body>
   <div class="container">
     <h1>What Should I Do Today?</h1>
-    <p id="suggestion">Click the button to find out.</p>
-    <button id="generateBtn">Tell me</button>
+
+    <p id="suggestion">Click the button.</p>
+
+    <div class="controls">
+      <select id="mode">
+        <option value="random">Random</option>
+        <option value="serious">Serious</option>
+        <option value="silly">Silly</option>
+      </select>
+
+      <label class="daily-toggle">
+        <input type="checkbox" id="dailyMode" />
+        One per day
+      </label>
+    </div>
+
+    <div class="buttons">
+      <button id="generateBtn">Tell me</button>
+      <button id="favoriteBtn">⭐</button>
+    </div>
+
+    <p id="meta"></p>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
