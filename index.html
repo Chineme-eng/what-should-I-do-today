@@ -12,25 +12,25 @@
 
     <p id="suggestion">Click the button.</p>
 
-    <div class="controls">
-      <select id="mode">
-        <option value="random">Random</option>
-        <option value="serious">Serious</option>
-        <option value="silly">Silly</option>
-      </select>
-
-      <label class="daily-toggle">
-        <input type="checkbox" id="dailyMode" />
-        One per day
-      </label>
-    </div>
-
     <div class="buttons">
       <button id="generateBtn">Tell me</button>
       <button id="favoriteBtn">⭐</button>
+      <button id="shareBtn">Share</button>
+      <button id="darkBtn">🌙</button>
     </div>
 
-    <p id="meta"></p>
+    <button id="viewFavoritesBtn" class="link-btn">View Favorites</button>
+
+    <p id="meta" class="hidden"></p>
+  </div>
+
+  <!-- Favorites Modal -->
+  <div id="favoritesModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Favorites</h2>
+      <ul id="favoritesList"></ul>
+      <button id="closeModal">Close</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
