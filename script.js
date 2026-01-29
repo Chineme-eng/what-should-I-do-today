@@ -1,71 +1,106 @@
-const suggestions = [
-  // 🧠 Serious / Productive
-  "Write down everything stressing you out, then close the notebook",
-  "Apply to one job, even if you feel underqualified",
-  "Clean exactly one drawer — not the whole room",
-  "Organize your phone photos from just this month",
-  "Set a 10-minute timer and work without stopping",
-  "Check your bank balance without judging yourself",
-  "Update your resume by one line",
-  "Drink a full glass of water right now",
-  "Take a shower and actually let the water hit your back",
-  "Go outside and stand in the cold for 2 minutes",
+const suggestions = {
+  serious: [
+    "Apply to one job you think you won’t get",
+    "Check your bank balance without spiraling",
+    "Clean one drawer only",
+    "Update one line on your resume",
+    "Write down what’s bothering you, then close the notebook",
+    "Drink a full glass of water",
+    "Set a 10-minute focus timer",
+    "Organize files on your desktop",
+    "Reply to one message you’ve been avoiding",
+    "Go outside for fresh air"
+  ],
+  silly: [
+    "Lip-sync dramatically to one song",
+    "Narrate your life like a documentary",
+    "Text someone one random emoji",
+    "Spin around once and stop",
+    "Pretend you’re in a movie montage",
+    "Make the ugliest face possible",
+    "Clap once and move on",
+    "Walk like a main character",
+    "Talk to yourself like a coach",
+    "Give yourself a fake award"
+  ]
+};
 
-  // 💛 Self-Care / Grounding
-  "Sit on the floor and stretch your legs for 5 minutes",
-  "Breathe in for 4 seconds, out for 6 — do this 5 times",
-  "Light a candle and do nothing until it feels calm",
-  "Put your phone face-down for 10 minutes",
-  "Make your bed, even if the rest of the room is a mess",
-  "Drink something warm slowly",
-  "Wash your face with warm water",
-  "Stand up and roll your shoulders",
-  "Look out the window and name 5 things you see",
-  "Close your eyes and unclench your jaw",
-
-  // 🎈 Silly / Light
-  "Put on a song and dramatically lip-sync it",
-  "Spin around in a chair once",
-  "Text someone a single emoji",
-  "Google something completely useless",
-  "Walk like a main character to the kitchen",
-  "Make the ugliest face you can",
-  "Pretend you’re in a movie montage",
-  "Say 'I’m doing my best' out loud",
-  "Dance for exactly 30 seconds",
-  "Wave at yourself in a mirror",
-
-  // 🤡 Unhinged / Fun
-  "Name the next app you open like it’s a villain",
-  "Act like you’re being interviewed about your life",
-  "Give yourself a fake award for surviving today",
-  "Narrate your actions in third person",
-  "Decide what your alter ego would do right now",
-  "Stare at the ceiling and think of nothing",
-  "Clap once and move on with your life",
-  "Stand up and announce 'next task'",
-  "Open a random tab and immediately close it",
-  "Sit very still and reboot your brain",
-
-  // 🌱 Gentle Progress
-  "Do one thing Future You will appreciate",
-  "Write a to-do list and only do the first item",
-  "Start something badly instead of not at all",
-  "Tidy up for 3 minutes, then stop",
-  "Send one honest message",
-  "Think about where you want to be in 6 months",
-  "Delete one app you don’t use",
-  "Save $1 or write it down as a goal",
-  "Put something back where it belongs",
-  "Tell yourself today counts"
-];
-
-const button = document.getElementById("generateBtn");
+// DOM
 const suggestionText = document.getElementById("suggestion");
+const button = document.getElementById("generateBtn");
+const favoriteBtn = document.getElementById("favoriteBtn");
+const modeSelect = document.getElementById("mode");
+const dailyToggle = document.getElementById("dailyMode");
+const meta = document.getElementById("meta");
 
+// State
+let clickCount = 0;
+let lastSuggestion = null;
+
+// Helpers
+function getTodayKey() {
+  return new Date().toDateString();
+}
+
+function getRandomSuggestion(mode) {
+  if (mode === "random") {
+    const all = [...suggestions.serious, ...suggestions.silly];
+    return all[Math.floor(Math.random() * all.length)];
+  }
+  const list = suggestions[mode];
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+// Button click
 button.addEventListener("click", () => {
-  const randomIndex = Math.floor(Math.random() * suggestions.length);
-  suggestionText.textContent = suggestions[randomIndex];
+  clickCount++;
+
+  // One-per-day logic
+  if (dailyToggle.checked) {
+    const saved = JSON.parse(localStorage.getItem("dailySuggestion"));
+    if (saved && saved.date === getTodayKey()) {
+      suggestionText.textContent = saved.text;
+      meta.textContent = "That’s today’s suggestion 🙂";
+      return;
+    }
+  }
+
+  const mode = modeSelect.value;
+  const suggestion = getRandomSuggestion(mode);
+  lastSuggestion = suggestion;
+
+  suggestionText.textContent = suggestion;
   button.textContent = "Again";
+
+  // Save daily
+  if (dailyToggle.checked) {
+    localStorage.setItem(
+      "dailySuggestion",
+      JSON.stringify({ date: getTodayKey(), text: suggestion })
+    );
+  }
+
+  // Click feedback
+  if (clickCount === 5) meta.textContent = "You seem curious.";
+  if (clickCount === 10) meta.textContent = "Still looking, huh?";
+  if (clickCount === 20) meta.textContent = "Okay, now you’re procrastinating.";
+
+  // Animation
+  suggestionText.classList.remove("flash");
+  void suggestionText.offsetWidth;
+  suggestionText.classList.add("flash");
 });
 
+// Favorites
+favoriteBtn.addEventListener("click", () => {
+  if (!lastSuggestion) return;
+
+  const saved = JSON.parse(localStorage.getItem("favorites")) || [];
+  if (!saved.includes(lastSuggestion)) {
+    saved.push(lastSuggestion);
+    localStorage.setItem("favorites", JSON.stringify(saved));
+    meta.textContent = "Saved to favorites ⭐";
+  } else {
+    meta.textContent = "Already favorited.";
+  }
+});
