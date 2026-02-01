@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>What Should I Do Today?</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Should I Do Today? | Picao AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h1>What Should I Do Today?</h1>
 
-    <p id="suggestion">Click the button.</p>
+    <div class="game-card">
+        <header>
+            <div class="logo">Picao AI</div>
+            <button id="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
+        </header>
 
-    <div class="buttons">
-      <button id="generateBtn">Tell me</button>
-      <button id="favoriteBtn">⭐</button>
-      <button id="shareBtn">Share</button>
-      <button id="darkBtn">🌙</button>
+        <main>
+            <h1>What Should I Do Today?</h1>
+            <div class="display-box">
+                <p id="activity-text">Ready to start your day?</p>
+            </div>
+            
+            <div class="controls">
+                <button id="main-btn">Tell me</button>
+                <button id="fav-btn" class="icon-btn">⭐</button>
+            </div>
+        </main>
+
+        <footer>
+            <button id="view-favs">View Favorites</button>
+        </footer>
     </div>
 
-    <button id="viewFavoritesBtn" class="link-btn">View Favorites</button>
-
-    <p id="meta" class="hidden"></p>
-  </div>
-
-  <!-- Favorites Modal -->
-  <div id="favoritesModal" class="modal hidden">
-    <div class="modal-content">
-      <h2>Favorites</h2>
-      <ul id="favoritesList"></ul>
-      <button id="closeModal">Close</button>
+    <div id="fav-modal" class="hidden">
+        <div class="modal-content">
+            <h2>Your Favorites</h2>
+            <ul id="fav-list"></ul>
+            <button id="close-modal">Close</button>
+        </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
